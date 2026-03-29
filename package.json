@@ -7,7 +7,7 @@
   "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js",
+    "start": "node ./index.mjs",
     "server": "nodemon index.mjs",
     "css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch"
   },
