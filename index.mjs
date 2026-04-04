@@ -22,14 +22,6 @@ try {
     console.log(error);
 }
 
-/** 
- * en mi proyecto full stack de node con express estoy intentando cargar datos al formulario a través del controlador, pero al querer imprimirlo a través del servidor me figura vacio:
-    {}
-
-
- * 
- */
-
 // Habilitar Pug
 app.set('view engine', 'pug');
 app.set('views', './views');
