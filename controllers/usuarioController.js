@@ -1,5 +1,6 @@
 import { check, validationResult } from 'express-validator'
 import Usuario from '../models/Usuario.js'
+import { generarId } from '../helpers/tokens.js'
 
 const formularioLogin = (req, res) => {
     res.render('auth/login', {
@@ -17,14 +18,24 @@ const formularioRegistro = (req, res) => {
 const registrar = async (req, res) => {
     // console.log(req.body) // leer información del formulario
 
+    // Validación
     await check('nombre').notEmpty().withMessage('El nombre no puede estar vacío').run(req)
     await check('email').isEmail().withMessage('Eso no parece un email').run(req)
     await check('password').isLength({ min: 6 }).withMessage('El password debe tener al menos 6 caracteres').run(req)
-    await check('repetir_password').equals('password').withMessage('Las password no son iguales').run(req)
+    // await check('repetir_password').custom('password').withMessage('Las password no son iguales').run(req)
+    await check('repetir_password').custom((value, { req }) => {
+        if (value !== req.body.password) {
+            throw new Error('Las contraseñas no son iguales')
+        }
+        return true
+    })
+    .run(req)
 
     let resultado = validationResult(req)
 
-    // Verificar que el resultado esté vacío
+    // return re.json(resultado.array())
+
+    // verificar que el resultado esté vacío
     if(!resultado.isEmpty()) {
         // Errores
         return res.render('auth/registro', {
@@ -37,10 +48,39 @@ const registrar = async (req, res) => {
         })
     }
 
-    // Verificar que el usuario no esté duplicado
-    const existeUsuario = await Usuario.findOne({ where : { email : req.body.email } })
-    console.log(existeUsuario)
-    return;
+    // extraer los datos
+    const { nombre, email, password } = req.body
+
+    // verificar que el usuario no esté duplicado
+    const existeUsuario = await Usuario.findOne({ where : { email } })
+    
+    if (existeUsuario){
+        return res.render('auth/registro', {
+            pagina: 'Crear Cuenta',
+            errores: [{msg: 'El usuario ya está registrado'}],
+            usuario: {
+                nombre: req.body.nombre,
+                email: req.body.email
+            }
+        })
+    }
+
+    // console.log(existeUsuario)
+    // return; // es para probar el método eisteUsuario
+
+    //Almacenar un usuario 
+    await Usuario.create({    
+        nombre,
+        email,
+        password,
+        token: generarId()
+    })
+
+    // Mostrar mensaje de confirmación
+    res.render('templates/mensaje', {
+        pagina: 'Cuenta Creada Correctamente',
+        mensaje: 'Hemos Enviado Un Email de Confirmación'
+    })
 
     // const usuario = await Usuario.create(req.body)
     // res.json(usuario)

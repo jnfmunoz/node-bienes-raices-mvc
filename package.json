@@ -12,10 +12,12 @@
     "css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-validator": "^7.3.2",
     "mysql2": "^3.20.0",
+    "nodemailer": "^8.0.5",
     "pug": "^3.0.3",
     "sequelize": "^6.37.8"
   },
