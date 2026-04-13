@@ -1,6 +1,7 @@
 import { check, validationResult } from 'express-validator'
 import Usuario from '../models/Usuario.js'
 import { generarId } from '../helpers/tokens.js'
+import { emailRegistro } from '../helpers/emails.js'
 
 const formularioLogin = (req, res) => {
     res.render('auth/login', {
@@ -69,11 +70,18 @@ const registrar = async (req, res) => {
     // return; // es para probar el método eisteUsuario
 
     //Almacenar un usuario 
-    await Usuario.create({    
+    const usuario = await Usuario.create({    
         nombre,
         email,
         password,
         token: generarId()
+    })
+
+    // Envía email de confirmación
+    emailRegistro({
+        nombre: usuario.nombre,
+        email: usuario.email,
+        token: usuario.token,
     })
 
     // Mostrar mensaje de confirmación
