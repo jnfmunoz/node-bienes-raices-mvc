@@ -16,7 +16,7 @@ const Usuario = db.define('usuarios', {
         allowNull: false,
     }, 
     token: DataTypes.STRING,
-    confirmad: DataTypes.BOOLEAN
+    confirmado: DataTypes.BOOLEAN
 }, {
     hooks : {
         beforeCreate: async function(usuario){
