@@ -102,9 +102,14 @@ const formularioOlvidePassword = (req, res) => {
     });
 }
 
+const resetPassword = (req, res) => {
+
+}
+
 export {
     formularioLogin,
     formularioRegistro,
     registrar,
     formularioOlvidePassword,
+    resetPassword,
 }
