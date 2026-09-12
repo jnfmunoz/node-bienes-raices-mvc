@@ -1,0 +1,21 @@
+// iniciar nuestro proyecto con node
+npm init
+
+// instalar en dependecias de proyecto - framework
+npm install express
+
+// instalar en dependecias de desarrollo
+npm i --save-dev express
+ó 
+npm install -D express
+
+// nodemon
+npm i nodemon
+npm run server
+
+// instalar tailwindcss
+npm i tailwindcss 
+
+// tambien sirve para arrancar el servidor de tailwindcss
+npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch
+npm run css // no me funciona xd

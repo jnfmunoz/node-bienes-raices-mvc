@@ -1,5 +1,5 @@
 import express from "express";
-import { formularioLogin, formularioRegistro, registrar, formularioOlvidePassword,  resetPassword} from "../controllers/usuarioController.js";
+import { formularioLogin, formularioRegistro, registrar, confirmar, formularioOlvidePassword,  resetPassword} from "../controllers/usuarioController.js";
 
 const router = express.Router();
 
@@ -9,8 +9,8 @@ router.get('/login', formularioLogin);
 router.get('/registro', formularioRegistro);
 router.post('/registro', registrar);
 
-//me falta estoo
 // router.get('/confirmar/:token', confirmar);
+router.get('/confirmar', confirmar);
 
 router.get('/olvide-password', formularioOlvidePassword);
 router.post('/olvide-password', resetPassword); // clase 53

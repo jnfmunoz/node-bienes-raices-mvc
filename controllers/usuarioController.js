@@ -89,11 +89,16 @@ const registrar = async (req, res) => {
     // Mostrar mensaje de confirmación
     res.render('templates/mensaje', {
         pagina: 'Cuenta Creada Correctamente',
-        mensaje: 'Hemos Enviado Un Email de Confirmación, presiona en el enlace'
+        mensaje: 'Hemos enviado Un email de confirmación, presiona en el enlace'
     })
 
     // const usuario = await Usuario.create(req.body)
     // res.json(usuario)
+}
+
+// Función que comprueba una cuenta
+const confirmar = (req, res) => {
+    console.log('Comprobando...')
 }
 
 const formularioOlvidePassword = (req, res) => {
@@ -110,6 +115,7 @@ export {
     formularioLogin,
     formularioRegistro,
     registrar,
+    confirmar,
     formularioOlvidePassword,
     resetPassword,
 }
