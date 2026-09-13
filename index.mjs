@@ -17,7 +17,7 @@ app.use('/auth', usuarioRoutes);
 // Conexión a la base de datos
 try {
     await db.authenticate();
-    db.sync()
+    await db.sync()
     console.log('Conexión exitosa a la base de datos');
 } catch (error) {
     console.log(error);
@@ -28,7 +28,7 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 
 // Definir un puerto y arrancar el proyecto
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`El servidor está funcionando en el puerto ${port}`);

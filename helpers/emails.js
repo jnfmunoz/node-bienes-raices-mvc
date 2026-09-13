@@ -23,7 +23,8 @@ const emailRegistro = async (datos) => {
             <p>Hola ${nombre}, comprueba tu cuenta en  BienesRaices.com</p>
             
             <p>Tu cuenta ya está lista, sólo debes confirmarla en el siguiente enlace: 
-            <a href="">Confirmar cuenta</a> </p>
+
+            <a href="${process.env.BACKEND_URL}:${process.env.PORT ?? 3000}/auth/confirmar/${token}">Confirmar cuenta</a> </p>            
 
             <p>Si tu no creaste esta cuenta, puedes ignorar el mensaje.</p>
         `
@@ -33,3 +34,6 @@ const emailRegistro = async (datos) => {
 export {
     emailRegistro
 }
+
+// <a href="${process.env.BACKEND_URL}:${process.env.PORT ?? 3000}/auth/confirmar/${token}">Confirmar cuenta</a> </p>
+// <a href="">Confirmar cuenta</a> </p>
