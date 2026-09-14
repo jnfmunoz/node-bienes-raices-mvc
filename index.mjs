@@ -1,4 +1,6 @@
 import express from 'express'; // ECMAScript Modules
+import csrf from '@dr.pogodin/csurf'
+import cookieParser from 'cookie-parser';
 import usuarioRoutes from './routes/usuarioRoutes.js';
 import db from './config/db.js';
 
