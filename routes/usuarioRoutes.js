@@ -12,7 +12,7 @@ router.post('/registro', registrar);
 router.get('/confirmar/:token', confirmar);
 
 router.get('/olvide-password', formularioOlvidePassword);
-router.post('/olvide-password', resetPassword); // clase 53
+router.post('/olvide-password', resetPassword);
 
 // router.get('/', function(req, res){
 //     res.json({msg: 'Hola mundo en express'});

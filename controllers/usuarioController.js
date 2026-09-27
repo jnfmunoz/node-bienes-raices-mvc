@@ -11,8 +11,11 @@ const formularioLogin = (req, res) => {
 }
 
 const formularioRegistro = (req, res) => {
+
+    // console.log(req.csrfToken())
     res.render('auth/registro', {
-        pagina: 'Crear Cuenta'
+        pagina: 'Crear Cuenta',
+        csrfToken: req.csrfToken()
     });
 }
 
@@ -41,6 +44,7 @@ const registrar = async (req, res) => {
         // Errores
         return res.render('auth/registro', {
             pagina: 'Crear Cuenta',
+        csrfToken: req.csrfToken(),
             errores: resultado.array(),
             usuario: {
                 nombre: req.body.nombre,
@@ -58,6 +62,7 @@ const registrar = async (req, res) => {
     if (existeUsuario){
         return res.render('auth/registro', {
             pagina: 'Crear Cuenta',
+            csrfToken: req.csrfToken(),
             errores: [{msg: 'El usuario ya está registrado'}],
             usuario: {
                 nombre: req.body.nombre,
@@ -136,11 +141,35 @@ const confirmar = async (req, res, next) => {
 
 const formularioOlvidePassword = (req, res) => {
     res.render('auth/olvide-password', {
-        pagina: 'Recupera tu acceso a Bienes Raíces'
+        pagina: 'Recupera tu acceso a Bienes Raíces',
+        csrfToken: req.csrfToken()
     });
 }
 
-const resetPassword = (req, res) => {
+const resetPassword = async (req, res) => {
+    // Validación
+    await check('email').isEmail().withMessage('Eso no parece un email').run(req)
+
+    let resultado = validationResult(req)
+
+    // return re.json(resultado.array())
+
+    // verificar que el resultado esté vacío
+    if(!resultado.isEmpty()) {
+        // Errores
+        return res.render('auth/olvide-password', {
+            pagina: 'Recupera tu acceso a Bienes Raíces',
+            csrfToken: req.csrfToken(),
+            errores: resultado.array()
+        })
+    }
+
+    // Buscar el usuario
+    const {email} = req.body;
+
+    const usuario = await Usuario.findOne({where:{email}});
+
+    console.log(usuario);
 
 }
 

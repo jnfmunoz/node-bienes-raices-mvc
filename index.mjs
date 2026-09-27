@@ -13,6 +13,12 @@ app.use(express.static('public'));
 // Habilitar lectura de datos del formulario
 app.use(express.urlencoded({extended:true}))
 
+// Habilitar Cookier Parser
+app.use(cookieParser())
+
+// Habilitar CSRF
+app.use(csrf({cookie:true}))
+
 // Routing
 app.use('/auth', usuarioRoutes);
 

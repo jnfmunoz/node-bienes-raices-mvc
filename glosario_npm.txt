@@ -19,3 +19,6 @@ npm i tailwindcss
 // tambien sirve para arrancar el servidor de tailwindcss
 npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch
 npm run css // no me funciona xd
+
+// para instalar las nuevas dependencias
+npm install
