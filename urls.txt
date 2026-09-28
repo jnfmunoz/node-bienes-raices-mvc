@@ -1,5 +1,7 @@
 http://localhost:3000/auth/registro
 
+http://localhost:3000/auth/olvide-password
+
 http://localhost/phpmyadmin/
 
 bienesraicesnode@gmail.com

@@ -1,4 +1,5 @@
 import { check, validationResult } from 'express-validator'
+import bcrypt from 'bcrypt'
 import Usuario from '../models/Usuario.js'
 import { generarId } from '../helpers/tokens.js'
 import { emailRegistro, emailOlvidePassword } from '../helpers/emails.js'
@@ -133,10 +134,7 @@ const confirmar = async (req, res, next) => {
             mensaje: 'Cuenta confirmada correctamente',
     })
 
-    
-
     next();
-
 }
 
 const formularioOlvidePassword = (req, res) => {
@@ -199,11 +197,64 @@ const resetPassword = async (req, res) => {
 
 }
 
-const comprobarToken = (req, res, next) => {
-    next();
-};
-const nuevoPassword = (req, res) => {
+const comprobarToken = async (req, res) => {
+    const { token } = req.params;
 
+    const usuario = await Usuario.findOne({where: {token}})
+
+    if(!usuario){
+        return res.render('auth/confirmar-cuenta', {
+            pagina: 'Reestablece tu Password',
+            mensaje: 'Hubo un error al validar tu información, intenta nuevamente',
+            error: true
+        })
+    }
+
+    // Mostrar formulario para modificar el password
+    res.render('auth/reset-password', {
+        pagina: 'Reestablece tu Password',
+        csrfToken: req.csrfToken(),
+    })
+
+    // console.log(usuario);
+
+};
+const nuevoPassword = async (req, res) => {
+    // console.log('Guardando password...');
+
+    // Validar el password
+    await check('password').isLength({ min: 6 }).withMessage('El password debe tener al menos 6 caracteres').run(req)
+
+    let resultado = validationResult(req)
+
+    // verificar que el resultado esté vacío
+    if(!resultado.isEmpty()) {
+        // Errores
+        return res.render('auth/reset-password', {
+            pagina: 'Reestablece tu Password',
+            csrfToken: req.csrfToken(),
+            errores: resultado.array()
+        })
+    }
+
+    const {token}= req.params;
+    const {password}=req.body;
+
+    // Identificar quien hace el cambio
+    const usuario = await Usuario.findOne({where:{token}});
+    // console.log(usuario);
+
+    // Hashear el nuevo password
+    const salt = await bcrypt.genSalt(10)
+    usuario.password = await bcrypt.hash(password, salt);
+    usuario.token = null;
+
+    await usuario.save();
+
+    res.render('auth/confirmar-cuenta', {
+        pagina:"Password reestablecia",
+        mensaje: "El password se guardó correctamente"
+    })
 };
 
 export {
