@@ -1,14 +1,82 @@
 import { check, validationResult } from 'express-validator'
 import bcrypt from 'bcrypt'
 import Usuario from '../models/Usuario.js'
-import { generarId } from '../helpers/tokens.js'
+import { generarJWT, generarId } from '../helpers/tokens.js'
 import { emailRegistro, emailOlvidePassword } from '../helpers/emails.js'
 
 const formularioLogin = (req, res) => {
     res.render('auth/login', {
-        pagina: 'Iniciar Sesión'       
+        pagina: 'Iniciar Sesión',
+		csrfToken: req.csrfToken()
         // autenticado: false
     });
+}
+
+const autenticar = async(req, res) => {
+    // console.log('autenticando...')
+	
+	// Validación
+    await check('email').isEmail().withMessage('El email es obligatorio').run(req)
+    await check('password').notEmpty().withMessage('El password es obligatorio').run(req)
+	
+	let resultado = validationResult(req)
+
+    // return re.json(resultado.array())
+
+    // verificar que el resultado esté vacío
+    if(!resultado.isEmpty()) {
+        // Errores
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+			csrfToken: req.csrfToken(),
+            errores: resultado.array()
+        })
+    }
+	
+	const { email, password } = req.body;
+	
+	// Comprobar si el usuario existe
+	const usuario = await Usuario.findOne({where: {email}})
+
+	if(!usuario) {
+		// Errores
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+			csrfToken: req.csrfToken(),
+			errores: [{msg: 'El usuario no existe'}]
+        })
+	}
+	
+	// Comprobar si el usuario está confirmado
+	if(!usuario.confirmado){
+		// Errores
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+			csrfToken: req.csrfToken(),
+			errores: [{msg: 'Tu cuenta no ha sido confirmada'}]
+        })
+	}
+	
+	// Revisar el password
+	if(!usuario.verificarPassword(password)) {
+		return res.render('auth/login', {
+			pagina: 'Iniciar Sesión',
+			csrfToken: req.csrfToken(),
+			errores: [{msg: 'El password es incorrecto'}]
+		})
+	}
+	
+	// Autenticar el Usuario KEYCLOAK JS | PASSPORT | JSONWEBTOKEN
+	const token = generarJWT({id: usuario.id, nombre: usuario.nombre});
+	
+	console.log(token);
+	
+    // Almacenar JWT en un Cookie
+    
+    return res.cookie('_token', token, {
+        httpOnly: true,
+        // secure:true
+    }).redirect('/mis-propiedades')
 }
 
 const formularioRegistro = (req, res) => {
@@ -45,7 +113,7 @@ const registrar = async (req, res) => {
         // Errores
         return res.render('auth/registro', {
             pagina: 'Crear Cuenta',
-        csrfToken: req.csrfToken(),
+			csrfToken: req.csrfToken(),
             errores: resultado.array(),
             usuario: {
                 nombre: req.body.nombre,
@@ -259,6 +327,7 @@ const nuevoPassword = async (req, res) => {
 
 export {
     formularioLogin,
+	autenticar,
     formularioRegistro,
     registrar,
     confirmar,
