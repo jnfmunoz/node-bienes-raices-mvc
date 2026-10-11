@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node ./index.mjs",
     "server": "nodemon index.mjs",
-    "css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch"
+    "css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch",
+    "js": "webpack"
   },
   "dependencies": {
     "@dr.pogodin/csurf": "^1.17.1",
@@ -30,6 +31,8 @@
     "nodemon": "^3.1.11",
     "postcss": "^8.5.6",
     "postcss-cli": "^11.0.1",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "webpack": "^5.111.1",
+    "webpack-cli": "^7.2.3"
   }
 }
