@@ -1,7 +1,8 @@
 extends ../layout/index
 
 block styles
-    
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
 block contenido
     div.py-10 
         h1.text-4xl.my-10.font-extrabold.text-center Bienes
@@ -17,6 +18,9 @@ block contenido
                     div
                         label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="titulo") Título del anuncio
                         input#titulo.w-full.px-3.py-2.border.border-gray-300.placeholder-gray-400(placeholder="Título de la propiedad, ej. Casa en la Playa" type="text" name="titulo")
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="descripcion") Descripción
+                        textarea#descripcion.w-full.px-3.py-2.border.border-gray-300.placeholder-gray-400(placeholder="Descripción de la propiedad" type="text" name="descripcion")
 
                     div(class="md:flex md:gap-4 space-y-5")
                         div(class="md:w-1/2")
@@ -52,6 +56,19 @@ block contenido
                                 - let z = 1;
                                     while z < 4
                                         option(value=z) #{z++}
+
+                    div.border-gray-200.border-t.py-5.space-y-5
+                        h3.text-lg-leading-6.font-medium.text-gray-900 Ubicación
+                        p.text-gray-600 Selecciona en el mapa dónde se encuentra la propiedad.
+                        #mapa.h-96
+
+                        div
+                            p.calle 
+                        
+                        input(type="hidden" name="calle" id="calle")
+                        input(type="hidden" name="lat" id="lat")
+                        input(type="hidden" name="lng" id="lng")
+
 
 block scripts
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
