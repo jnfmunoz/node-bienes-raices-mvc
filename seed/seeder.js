@@ -15,6 +15,13 @@ const importarDatos = async () => {
 
         // Insertar datos
         await Categoria.bulkCreate(categorias);
+        await Precio.bulkCreate(precios);
+ 
+        await Promise.all([
+            Categoria.bulkCreate(categorias),
+            Precio.bulkCreate(precios)
+        ])
+
         console.log('Datos importados correctamente');
         exit();
 
@@ -25,6 +32,25 @@ const importarDatos = async () => {
     }
 }
 
+const eliminarDatos = async () => {
+    try{
+        // await Promise.all([
+        //     Categoria.destroy({where: {}, truncate: true}),
+        //     Precio.destroy({where: {}, truncate: true})
+        // ])
+            await db.sync({force: true});
+            console.log('Datos eliinados correctamente');
+            exit();
+    } catch {
+        console.log(error)
+        exit(1);
+    }
+}
+
 if(process.argv[2] === "-i"){
     importarDatos();
+}
+
+if(process.argv[2] === "-e"){
+    eliminarDatos();
 }

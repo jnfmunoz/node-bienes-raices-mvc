@@ -12,7 +12,8 @@
     "css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch",
     "js": "webpack --watch",
     "dev": "concurrently \"npm run css\" \"npm run js\" ",
-    "db:importar": "node ./seed/seeder.js -i"
+    "db:importar": "node ./seed/seeder.js -i",
+    "db:eliminar": "node ./seed/seeder.js -e"
   },
   "dependencies": {
     "@dr.pogodin/csurf": "^1.17.1",
