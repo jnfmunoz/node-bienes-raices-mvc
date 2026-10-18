@@ -11,7 +11,8 @@
     "server": "nodemon index.mjs",
     "css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/app.css --watch",
     "js": "webpack --watch",
-    "dev": "concurrently \"npm run css\" \"npm run js\" "
+    "dev": "concurrently \"npm run css\" \"npm run js\" ",
+    "db:importar": "node ./seed/seeder.js -i"
   },
   "dependencies": {
     "@dr.pogodin/csurf": "^1.17.1",
