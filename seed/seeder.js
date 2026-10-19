@@ -38,10 +38,10 @@ const eliminarDatos = async () => {
         //     Categoria.destroy({where: {}, truncate: true}),
         //     Precio.destroy({where: {}, truncate: true})
         // ])
-            await db.sync({force: true});
-            console.log('Datos eliinados correctamente');
-            exit();
-    } catch {
+        await db.sync({force: true});
+        console.log('Datos eliinados correctamente');
+        exit();
+    } catch(error) {
         console.log(error)
         exit(1);
     }
