@@ -8,7 +8,7 @@ const admin = (req, res) => {
     })
 }
 
-const crear = (req, res) => {
+const crear = async (req, res) => {
 
         // Consultar modelo de Precio y Categorias
         const [categorias, precios] = await Promise.all([
