@@ -20,8 +20,10 @@ const crear = async (req, res) => {
         res.render('propiedades/crear', {
         pagina: 'Crear Propiedad',
         barra: true,
+        csrfToken: req.csrfToken(),
         categorias: categorias,
-        precios
+        precios,
+        datos: {}
     })
 }
 
@@ -29,7 +31,7 @@ const guardar = async (req, res) => {
     // Validación
     let resultado = validationResult(req);
 
-    if(!resultado.isEmpty){
+    if(!resultado.isEmpty()){
         // Consultar modelo de Precio y Categoria
         const [ categorias, precios ] = await Promise.all([
             Categoria.findAll(),
@@ -39,10 +41,11 @@ const guardar = async (req, res) => {
         return res.render('propiedades/crear', {
             pagina: 'Crear Propiedad',
             barra: true,
-            csrfToken: req.csrfToken,
+            csrfToken: req.csrfToken(),
             categorias: categorias,
             precios,
-            errores: resultado.array()
+            errores: resultado.array(),
+            datos: req.body
         })
     }
 }

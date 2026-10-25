@@ -52,7 +52,6 @@ const Propiedad = db.define('propiedades', {
         defaultValue: false
     }
 
-
 });
 
 export default Propiedad
